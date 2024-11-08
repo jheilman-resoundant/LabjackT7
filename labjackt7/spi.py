@@ -1,5 +1,6 @@
 ''' Digital communications module featuring SPI capabilities. '''
 from labjack import ljm
+# from .core import LabjackT7
 
 class SPI:
     def __init__(self, labjack):

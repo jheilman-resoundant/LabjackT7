@@ -2,13 +2,13 @@ from distutils.core import setup
 from setuptools import find_packages
 
 setup(
-    name='labyak',
+    name='labjackt7',
     version='0.1',
-    description='High-level wrappers around the LJM Python library for data acquisition and waveform or pattern generation',
-    author='Robert Fasano',
-    author_email='robert.j.fasano@colorado.edu',
+    description='High-level Labjack T7 interface, warapping LJM Python library for data acquisition and waveform or pattern generation',
+    author='Jeremiah Heilman',
+    author_email='jeremiah.heilman@gmail.com',
     packages=find_packages(),
     license='MIT',
     long_description=open('README.md').read(),
-    install_requires=['labjack-ljm']
+    install_requires=['labjack-ljm', 'numpy', 'StrEnum']
 )

@@ -1,4 +1,7 @@
+
+# from .core import LabjackT7
 _LJ_CLOCK_SPEED = 80e6
+
 class PWM:
     def __init__(self, labjack):
         self.labjack = labjack
@@ -34,4 +37,4 @@ class PWM:
         self.labjack._write_dict(config)
 
     def stop(self, channel):
-        self._command("DIO%i_EF_ENABLE"%channel, 0)
+        self.labjack._command("DIO%i_EF_ENABLE"%channel, 0)

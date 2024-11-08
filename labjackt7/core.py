@@ -1,6 +1,6 @@
 ''' Base LabJack class implementing device connection and communication. '''
 from labjack import ljm
-from labjackt7 import Analog, Digital, Temperature, PWM, SPI, I2C, Stream, WaveformGenerator, PatternGenerator, ADCStream
+from labjackt7 import Analog, Digital, Temperature, PWM, SPI, I2C, Stream, WaveformGenerator, PatternGenerator
 
 class LabjackT7():
     def __init__(self, device='T7', connection='ANY', device_identifier='ANY', verbose='True'):
@@ -43,7 +43,6 @@ class LabjackT7():
         self.stream = Stream(self)
         self.waveform = WaveformGenerator(self)
         self.pattern = PatternGenerator(self)
-        self.adc_stream = ADCStream(self)
 
     def _query(self, register):
         ''' Reads the specified register. '''

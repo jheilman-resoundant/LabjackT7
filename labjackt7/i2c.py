@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
-from labjack import ljm
-
+# from .core import LabjackT7
 class I2C:
     def __init__(self, labjack):
         self.labjack = labjack

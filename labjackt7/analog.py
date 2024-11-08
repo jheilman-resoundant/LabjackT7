@@ -1,6 +1,26 @@
+from labjack import ljm
+# from .core import LabjackT7
+
+class AnalogConfig():
+    def __init__(self, range=10):
+        self.analog_config_dict = {
+            "AIN_ALL_NEGATIVE_CH" : ljm.constants.GND,
+            "AIN_ALL_RANGE" : range
+        }
+        # other options
+        # 'AINx_RANGE'
+        # differential():
+
+
 class Analog():
     def __init__(self, labjack):
         self.labjack = labjack
+
+    def configure(self, range=10):
+        self.labjack._write_dict({
+            "AIN_ALL_NEGATIVE_CH" : ljm.constants.GND,
+            "AIN_ALL_RANGE" : range
+        })
 
     def ain(self, channel):
         ''' Read a channel and return the voltage. '''

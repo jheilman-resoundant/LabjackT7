@@ -11,7 +11,7 @@ See the Jupyter notebook "Examples.ipynb" for a runnable version.
 ### Connecting to a device
 ```python 
   from labyak import LabJack
-  labjack = LabJack(devid='470017907')
+  labjack = LabJack()
 ```
 ### Analog I/O
 Generate 1 V on channel DAC0 and measure it on ADC0:

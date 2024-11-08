@@ -1,4 +1,4 @@
-from labjack import ljm
+
 import numpy as np
 
 class Digital():
@@ -8,30 +8,44 @@ class Digital():
     def __init__(self, labjack):
         self.labjack = labjack
 
-    def DIn(self, channel):
-        return int(self.labjack._query('DIO{}'.format(channel)))
-
-    def DOut(self, channel, state):
-        ''' Output a digital signal.
+    def din(self, channel) -> int:
+        ''' Read a digital signal.
 
             Args:
-                channel (str): a digital channel on the LabJack, e.g. 'FIO4'.
+                channel (str or int): a digital channel on the LabJack, e.g. 'FIO4'.
+            Return:
                 state (int): 1 or 0
         '''
         if type(channel) is int:
-            channel = 'DIO%i'%channel
+            channel = f'DIO{channel}'
+        return int(self.labjack._query(channel))
+
+    def dout(self, channel, state:int):
+        ''' Output a digital signal.
+
+            Args:
+                channel (str or int): a digital channel on the LabJack, e.g. 'FIO4'.
+                state (int): 1 or 0
+        '''
+        if type(channel) is int:
+            channel = f'DIO{channel}'
         self.labjack._command(channel, state)
 
-    def DIO_STATE(self, channels, states):
-        ''' Set multiple digital channels simultaneously. '''
-        state = 0
+    def dout_multi(self, channels:list, states:list):
+        ''' Set multiple digital channels simultaneously. 
+        
+            Args:
+                channels (list of numbers): numerical channels (str NOT supported)
+                states (list of 1/0): 1's or 0's
+        '''
+        bitstate = 0
         for i in range(len(channels)):
-            state = state | (states[i] << channels[i])
+            bitstate = bitstate | (states[i] << channels[i])
 
         bitmask = self.bitmask(channels)
-        self.labjack._write_dict({'DIO_INHIBIT': 0x7FFFFF-bitmask,
+        self.labjack._write_dict({'DIO_INHIBIT':   0x7FFFFF-bitmask,
                                   'DIO_DIRECTION': bitmask,
-                                  'DIO_STATE': state})
+                                  'DIO_STATE':     bitstate})
 
     @staticmethod
     def inhibit_string(channels):
@@ -70,5 +84,4 @@ class Digital():
         bitmask = 0
         for j in range(len(channels)):
             bitmask = bitmask | (int(states[j]) << channels[j])
-
         return bitmask
