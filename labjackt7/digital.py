@@ -16,8 +16,7 @@ class Digital():
             Return:
                 state (int): 1 or 0
         '''
-        if type(channel) is int:
-            channel = f'DIO{channel}'
+        channel = self._chan_to_str(channel)
         return int(self.labjack._query(channel))
 
     def dout(self, channel, state:int):
@@ -27,8 +26,7 @@ class Digital():
                 channel (str or int): a digital channel on the LabJack, e.g. 'FIO4'.
                 state (int): 1 or 0
         '''
-        if type(channel) is int:
-            channel = f'DIO{channel}'
+        channel = self._chan_to_str(channel)
         self.labjack._command(channel, state)
 
     def dout_multi(self, channels:list, states:list):
@@ -85,3 +83,8 @@ class Digital():
         for j in range(len(channels)):
             bitmask = bitmask | (int(states[j]) << channels[j])
         return bitmask
+
+    def _chan_to_dio(self, channel):
+        if type(channel) is int:
+            channel = f'DIO{channel}'
+        return channel

@@ -7,6 +7,7 @@ class PWM:
         self.labjack = labjack
 
     def start(self, channel, frequency, duty_cycle):
+        channel = self._chan_to_dio(channel)
         ''' Starts pulse width modulation on an FIO channel.
 
             Args:
@@ -24,17 +25,19 @@ class PWM:
 
         config = {
             "DIO_EF_CLOCK0_ENABLE": 1,
-            "DIO%i_EF_ENABLE"%channel: 0,
-            "DIO%i_EF_INDEX"%channel: 0,
-            "DIO%i_EF_OPTIONS"%channel: 0,
-            "DIO%i_EF_CONFIG_A"%channel: duty_cycle * roll_value,
+            f"{channel}_EF_ENABLE": 0,
+            f"{channel}_EF_INDEX": 0,
+            f"{channel}_EF_OPTIONS": 0,
+            f"{channel}_EF_CONFIG_A": duty_cycle * roll_value,
         }
         self.labjack._write_dict(config)
 
         config = {
-            "DIO%i_EF_ENABLE"%channel: 1
+            f"{channel}_EF_ENABLE": 1
         }
         self.labjack._write_dict(config)
 
     def stop(self, channel):
-        self.labjack._command("DIO%i_EF_ENABLE"%channel, 0)
+        channel = self._chan_to_dio(channel)
+        self.labjack._command(f"{channel}_EF_ENABLE", 0)
+        self.labjack.digital.dout(channel, 0)
