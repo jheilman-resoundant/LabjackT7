@@ -75,7 +75,7 @@ class Stream():
         start = datetime.now()
         scanRate, aData = ljm.streamBurst(self.labjack.handle, len(aScanList), aScanList, scanRate, num_scans)
         end = datetime.now()
-        if True:
+        if False:
             print(f"Channels: {len(aScanListNames)},  Samples per Ch: {len(aData)/len(aScanListNames)}, ScanRate: {scanRate}, Elapsed Time = {(end - start).seconds + float((end - start).microseconds) / 1000000}s" )
         if aData.count(-9999.0) > 0:
             print(f"WARNING: some samples were skipped! Total skips, all channels) = f{aData.count(-9999.0)}")

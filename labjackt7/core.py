@@ -9,6 +9,8 @@ class LabjackT7():
         connection: ethernet, usb...
         device_identifier: serial num...
         '''
+        self.device_type = None
+        self.serial_number = None
         try:
             self.handle = ljm.openS(device,
                                     connection,
@@ -16,8 +18,8 @@ class LabjackT7():
             info = ljm.getHandleInfo(self.handle)
             assert info[0] in [ljm.constants.dtT7, ljm.constants.dtT4]
         except Exception as e:
-            print('Failed to connect to LabJack ({connection} {device_identifier}): {e}.')
-
+            print(f'Failed to connect to LabJack ({connection} {device_identifier}): {e}.')
+            return
         self.device_type = info[0]
         self.connection_type = info[1]
         self.serial_number = info[2]
@@ -25,6 +27,7 @@ class LabjackT7():
         self.port = info[4]
         self.bytes_per_MB = info[5]
         self.firmware_version = ljm.eReadName(self.handle, "FIRMWARE_VERSION")
+        self.ljtick = None # hack until tick support is added
 
         if verbose:
             print(f'Connected to LabJack type {self.device_type}')
